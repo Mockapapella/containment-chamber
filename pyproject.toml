@@ -3,9 +3,9 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
-name = "irongrip"
+name = "redalert"
 dynamic = ["version"]
-description = "A tool for irongrip functionality"
+description = "A tool for redalert functionality"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
@@ -25,18 +25,18 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/Mockapapella/irongrip"
-Repository = "https://github.com/Mockapapella/irongrip"
-Issues = "https://github.com/Mockapapella/irongrip/issues"
+Homepage = "https://github.com/Mockapapella/redalert"
+Repository = "https://github.com/Mockapapella/redalert"
+Issues = "https://github.com/Mockapapella/redalert/issues"
 
 [project.scripts]
-irongrip = "irongrip.main:main"
+redalert = "redalert.main:main"
 
 [tool.hatch.version]
 source = "vcs"
 
 [tool.hatch.build.hooks.vcs]
-version-file = "irongrip/_version.py"
+version-file = "redalert/_version.py"
 
 [dependency-groups]
 dev = [
@@ -45,7 +45,7 @@ dev = [
 
 [tool.hatch.build]
 include = [
-    "irongrip/**/*.py",
+    "redalert/**/*.py",
     "README.md",
     "LICENSE",
 ]
