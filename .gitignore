@@ -1,0 +1,14 @@
+# Python-generated files
+__pycache__/
+*/__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# hatch-vcs generated version file
+*/_version.py
+
+# Virtual environments
+.venv
