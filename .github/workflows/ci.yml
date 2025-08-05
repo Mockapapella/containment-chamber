@@ -23,4 +23,4 @@ jobs:
         python -m pip install .
     - name: Test import
       run: |
-        python -c "import importlib.metadata; print(importlib.metadata.version('redalert'))"
+        python -c "import importlib.metadata; print(importlib.metadata.version('containment-chamber'))"

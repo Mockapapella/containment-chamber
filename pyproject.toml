@@ -3,9 +3,9 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
-name = "redalert"
+name = "containment-chamber"
 dynamic = ["version"]
-description = "A tool for redalert functionality"
+description = "A tool for containment chamber functionality"
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
@@ -25,12 +25,12 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/Mockapapella/redalert"
-Repository = "https://github.com/Mockapapella/redalert"
-Issues = "https://github.com/Mockapapella/redalert/issues"
+Homepage = "https://github.com/Mockapapella/containment-chamber"
+Repository = "https://github.com/Mockapapella/containment-chamber"
+Issues = "https://github.com/Mockapapella/containment-chamber/issues"
 
 [project.scripts]
-redalert = "redalert.main:main"
+containment-chamber = "redalert.main:main"
 
 [tool.hatch.version]
 source = "vcs"

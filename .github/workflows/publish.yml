@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/p/redalert
+      url: https://pypi.org/p/containment-chamber
     permissions:
       id-token: write
     steps:
