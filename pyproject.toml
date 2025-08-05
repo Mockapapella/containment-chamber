@@ -30,13 +30,13 @@ Repository = "https://github.com/Mockapapella/containment-chamber"
 Issues = "https://github.com/Mockapapella/containment-chamber/issues"
 
 [project.scripts]
-containment-chamber = "redalert.main:main"
+containment-chamber = "containment_chamber.main:main"
 
 [tool.hatch.version]
 source = "vcs"
 
 [tool.hatch.build.hooks.vcs]
-version-file = "redalert/_version.py"
+version-file = "containment_chamber/_version.py"
 
 [dependency-groups]
 dev = [
@@ -45,7 +45,7 @@ dev = [
 
 [tool.hatch.build]
 include = [
-    "redalert/**/*.py",
+    "containment_chamber/**/*.py",
     "README.md",
     "LICENSE",
 ]
