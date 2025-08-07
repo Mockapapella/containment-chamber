@@ -8,9 +8,13 @@ Built for agents, not humans. Currently in alpha.
 
 # Use
 
-Since this is in the early stages, the recommended way to use this is to clone the repo, delete the `.git/` folder, and run:
+Since this is in the early stages, the recommended way to use this is to clone the repo, delete some folders, and run:
 
 ```
+rm -rf .git/
+rm -rf .github/
+rm -rf .stubs/
+rm -rf .tests/*
 git init
 uv sync
 source .venv/bin/activate
