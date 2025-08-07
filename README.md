@@ -29,17 +29,17 @@ Only Python for now but other languages planned once the theory proves out.
 
 - [x] 100% test coverage
 - [x] Property-based testing
-    - [ ] Auto-discovery of valid signatures for property tests
+    - [ ] Auto-discovery of valid signatures for property tests (currently no library for this)
 - [x] Mutation testing
 - [x] Enforce all type hints
 - [x] Enforce all linting rules
 - [x] Set and enforce complexity thresholds
-    - [ ] Cyclomatic Complexity
-    - [ ] Cognitive Complexity
+    - [x] Cyclomatic Complexity
+    - [x] Cognitive Complexity
 - [x] Security Audits
-    - [ ] Source code
-    - [ ] Dependencies
-    - [ ] Secrets analysis
+    - [x] Source code
+    - [x] Dependencies
+    - [x] Secrets analysis
 - [x] Enforce consistent code formatting
 - [ ] High quality auto-documentation
 - [ ] Reproducible builds
