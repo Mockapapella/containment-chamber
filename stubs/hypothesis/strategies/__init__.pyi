@@ -1,0 +1,6 @@
+class SearchStrategy[T]: ...
+
+def integers(
+    min_value: int | None = None,
+    max_value: int | None = None,
+) -> SearchStrategy[int]: ...

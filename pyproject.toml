@@ -41,6 +41,16 @@ version-file = "containment_chamber/_version.py"
 [dependency-groups]
 dev = [
     "build>=1.2.2.post1",
+    "bandit>=1.8.6",
+    "complexipy>=3.3.0",
+    "coverage[toml]>=7.9.2",
+    "hypothesis>=6.136.0",
+    "mutmut>=3.3.0",
+    "mypy>=1.17.0",
+    "pip-audit>=2.9.0",
+    "pre-commit>=4.2.0",
+    "pytest>=8.4.1",
+    "ruff>=0.12.5",
 ]
 
 [tool.hatch.build]
@@ -49,3 +59,59 @@ include = [
     "README.md",
     "LICENSE",
 ]
+
+[tool.coverage.run]
+source = ["."]
+omit = ["tests/*", ".venv/*", "*/__init__.py"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 100
+
+[tool.hypothesis]
+max_examples = 10000 # Arbitrary number
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["mutants"]
+
+[tool.mutmut]
+paths_to_mutate = ["containment_chamber/main.py"]
+tests_dir = "tests/"
+runner = "python -m pytest"
+backup = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D211", "D213"]
+
+[tool.mypy]
+python_version = "3.12"
+mypy_path = "stubs"
+strict = true
+disallow_any_unimported = true
+disallow_any_expr = true
+disallow_any_explicit = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+extra_checks = true
+strict_bytes = true
+local_partial_types = true
+show_error_codes = true
+pretty = true
+show_absolute_path = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+strict_equality = true
+no_implicit_reexport = true
+follow_imports = "silent"
+enable_error_code = ["exhaustive-match"]
+exclude = ["mutants/"]
+ignore_missing_imports = false
+disallow_untyped_calls = true
