@@ -28,6 +28,7 @@ Only Python for now but other languages planned once the theory proves out.
 # Features
 
 - [x] 100% test coverage
+    - [ ] Auto-detection of over-defined tests (i.e. multiple tests that test the same thing)
 - [x] Property-based testing
     - [ ] Auto-discovery of valid signatures for property tests (currently no library for this)
 - [x] Mutation testing
