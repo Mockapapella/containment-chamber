@@ -1,5 +1,7 @@
 """Simple arithmetic operations."""
 
+import sys
+
 
 def add(x: int, y: int) -> int:
     """Add two integers."""
@@ -11,8 +13,9 @@ def subtract(x: int, y: int) -> int:
     return x - y
 
 
-def main():
-    print("Hello from containment-chamber!")
+def main() -> None:
+    """Run the main entry point for containment-chamber."""
+    sys.stdout.write("Hello from containment-chamber!\n")
 
 
 if __name__ == "__main__":

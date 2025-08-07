@@ -77,7 +77,7 @@ norecursedirs = ["mutants"]
 
 [tool.mutmut]
 paths_to_mutate = ["containment_chamber/main.py"]
-tests_dir = "tests/"
+tests_dir = ["tests/"]
 runner = "python -m pytest"
 backup = false
 

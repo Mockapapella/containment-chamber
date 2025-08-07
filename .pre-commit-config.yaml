@@ -1,0 +1,50 @@
+repos:
+  - repo: local
+    hooks:
+      - id: pytest-coverage
+        name: pytest with coverage
+        entry: sh -c "coverage run -m pytest && coverage report --sort=cover"
+        language: system
+        pass_filenames: false
+      - id: mutmut
+        name: mutation testing
+        entry: sh -c "mutmut run && if mutmut results | grep -q survived; then echo 'Surviving mutants found:'; mutmut results; exit 1; fi"
+        language: system
+        pass_filenames: false
+      - id: ruff
+        name: ruff linting and formatting
+        entry: sh -c "ruff check --fix --exit-non-zero-on-fix . && ruff format ."
+        language: system
+        pass_filenames: false
+      - id: no-type-bypasses
+        name: enforce no type bypasses
+        entry: bash -c
+        args: ['! (grep -rE "# type: ignore|from typing import (Any|cast)|import (Any|cast)|: Any|cast\(|# mypy:|getattr\(|setattr\(|# noqa" --include="*.py" --exclude-dir=.venv --exclude-dir=.git . | grep -v "# noqa: S101") || (echo "Type bypass attempts found! Create proper type stubs instead." && exit 1)']
+        language: system
+        pass_filenames: false
+      - id: mypy
+        name: mypy type checking  
+        entry: mypy .
+        language: system
+        pass_filenames: false
+      - id: complexipy
+        name: complexity check
+        entry: complexipy --max-complexity-allowed 15
+        language: system
+        types: [python]
+        pass_filenames: true
+      - id: bandit
+        name: bandit security scan
+        entry: sh -c "bandit -r . -s B101 -x $(cat .gitignore | grep -v '^#' | grep -v '^$' | grep -v '\*' | sed 's|/$||' | sed 's|^|./|' | paste -sd, -)"
+        language: system
+        pass_filenames: false
+      - id: pip-audit
+        name: pip vulnerability scan
+        entry: pip-audit
+        language: system
+        pass_filenames: false
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.22.1
+    hooks:
+      - id: gitleaks
+
