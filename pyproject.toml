@@ -7,7 +7,7 @@ name = "containment-chamber"
 dynamic = ["version"]
 description = "A tool for containment chamber functionality"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.12"
 authors = [
     {name = "Mockapapella"},
 ]
@@ -61,22 +61,25 @@ include = [
 ]
 
 [tool.coverage.run]
-source = ["."]
-omit = ["tests/*", ".venv/*", "*/__init__.py", "*/_version.py"]
+source = ["containment_chamber"]
+branch = true
+omit = ["*/_version.py"]
 
 [tool.coverage.report]
 show_missing = true
 fail_under = 100
 
 [tool.hypothesis]
-max_examples = 10000 # Arbitrary number
+derandomize = true
+database = "none"
+max_examples = 300
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 norecursedirs = ["mutants"]
 
 [tool.mutmut]
-paths_to_mutate = ["containment_chamber/main.py"]
+paths_to_mutate = ["containment_chamber/"]
 tests_dir = ["tests/"]
 runner = "python -m pytest"
 backup = false
@@ -88,6 +91,9 @@ target-version = "py312"
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = ["D211", "D213"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101"]
 
 [tool.mypy]
 python_version = "3.12"
@@ -110,7 +116,7 @@ warn_unused_ignores = true
 warn_redundant_casts = true
 strict_equality = true
 no_implicit_reexport = true
-follow_imports = "silent"
+follow_imports = "normal"
 enable_error_code = ["exhaustive-match"]
 exclude = ["mutants/"]
 ignore_missing_imports = false

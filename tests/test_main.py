@@ -12,7 +12,7 @@ def test_main() -> None:
     with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
         main()
         output: str = mock_stdout.getvalue()
-        assert output == "Containment Chamber is in alpha!\n"  # noqa: S101
+        assert output == "Containment Chamber is in alpha!\n"
 
 
 def test_main_entry_point() -> None:
@@ -20,4 +20,4 @@ def test_main_entry_point() -> None:
     with patch("sys.stdout", new_callable=StringIO) as mock_stdout:
         runpy.run_module("containment_chamber.main", run_name="__main__")
         output: str = mock_stdout.getvalue()
-        assert output == "Containment Chamber is in alpha!\n"  # noqa: S101
+        assert output == "Containment Chamber is in alpha!\n"
