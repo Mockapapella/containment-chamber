@@ -17,3 +17,5 @@ wheels/
 mutants/
 .ruff_cache/
 .mypy_cache/
+htmlcov/
+*_version.py

@@ -62,7 +62,7 @@ include = [
 
 [tool.coverage.run]
 source = ["."]
-omit = ["tests/*", ".venv/*", "*/__init__.py"]
+omit = ["tests/*", ".venv/*", "*/__init__.py", "*/_version.py"]
 
 [tool.coverage.report]
 show_missing = true

@@ -1,7 +1,5 @@
-"""Containment Chamber - A demonstration library for security testing."""
+"""Containment Chamber - A simple CLI tool."""
 
-from containment_chamber.main import add, subtract
-
-__all__ = ["add", "subtract"]
+__all__: list[str] = []
 
 # Version is now managed by hatch-vcs from Git tags
