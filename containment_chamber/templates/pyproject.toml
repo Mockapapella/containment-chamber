@@ -1,43 +1,5 @@
-[build-system]
-requires = ["hatchling", "hatch-vcs"]
-build-backend = "hatchling.build"
-
-[project]
-name = "containment-chamber"
-dynamic = ["version"]
-description = "A tool for containment chamber functionality"
-readme = "README.md"
-requires-python = ">=3.12"
-authors = [
-    {name = "Mockapapella"},
-]
-license = {text = "MIT"}
-classifiers = [
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-]
-dependencies = []
-
-[project.urls]
-Homepage = "https://github.com/Mockapapella/containment-chamber"
-Repository = "https://github.com/Mockapapella/containment-chamber"
-Issues = "https://github.com/Mockapapella/containment-chamber/issues"
-
-[project.scripts]
-containment-chamber = "containment_chamber.main:main"
-
-[tool.hatch.version]
-source = "vcs"
-
-[tool.hatch.build.hooks.vcs]
-version-file = "containment_chamber/_version.py"
-
 [dependency-groups]
 dev = [
-    "build>=1.2.2.post1",
     "bandit>=1.8.6",
     "complexipy>=3.3.0",
     "coverage[toml]>=7.9.2",
@@ -50,17 +12,9 @@ dev = [
     "ruff>=0.12.5",
 ]
 
-[tool.hatch.build]
-include = [
-    "containment_chamber/**/*.py",
-    "README.md",
-    "LICENSE",
-]
-
 [tool.coverage.run]
 source = ["containment_chamber"]
 branch = true
-omit = ["*/_version.py"]
 
 [tool.coverage.report]
 show_missing = true
