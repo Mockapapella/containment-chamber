@@ -13,6 +13,7 @@ def init_containment_chamber() -> None:
     template_dir = Path(__file__).parent / "templates"
     precommit_template = template_dir / ".pre-commit-config.yaml"
     pyproject_template = template_dir / "pyproject.toml"
+    gitignore_template = template_dir / ".gitignore"
 
     # Get current directory
     current_dir = Path.cwd()
@@ -32,6 +33,14 @@ def init_containment_chamber() -> None:
     else:
         shutil.copy2(pyproject_template, pyproject_target)
         sys.stdout.write("Created pyproject.toml\n")
+
+    # Copy .gitignore
+    gitignore_target = current_dir / ".gitignore"
+    if gitignore_target.exists():
+        sys.stdout.write("Warning: .gitignore already exists, skipping.\n")
+    else:
+        shutil.copy2(gitignore_template, gitignore_target)
+        sys.stdout.write("Created .gitignore\n")
 
     sys.stdout.write("Containment chamber initialized!\n")
 

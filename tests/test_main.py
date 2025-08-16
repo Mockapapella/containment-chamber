@@ -68,7 +68,7 @@ def test_main_help_short() -> None:
 
 
 def test_main_init() -> None:
-    """Test the init command creates both config files."""
+    """Test the init command creates all three config files."""
     with (
         patch("sys.stdout", new_callable=StringIO) as mock_stdout,
         patch("sys.argv", ["containment-chamber", "init"]),
@@ -83,12 +83,13 @@ def test_main_init() -> None:
             "Initializing containment chamber...\n"
             "Created .pre-commit-config.yaml\n"
             "Created pyproject.toml\n"
+            "Created .gitignore\n"
             "Containment chamber initialized!\n"
         )
         assert output == expected
 
-        # Verify shutil.copy2 was called exactly twice (pre-commit + pyproject)
-        expected_call_count = 2
+        # Verify shutil.copy2 was called exactly three times (pre-commit + pyproject + gitignore)
+        expected_call_count = 3
         assert mock_copy.call_count == expected_call_count
 
 
@@ -98,22 +99,26 @@ def test_init_templates_directory_name() -> None:
     template_dir_name = "templates"
     config_filename = ".pre-commit-config.yaml"
     pyproject_filename = "pyproject.toml"
+    gitignore_filename = ".gitignore"
 
     expected_template_dir_length = 9
     expected_config_filename_length = 23
     expected_pyproject_filename_length = 14
+    expected_gitignore_filename_length = 10
 
     # These assertions will fail if mutations change the strings
     assert template_dir_name == "templates"
     assert config_filename == ".pre-commit-config.yaml"
     assert pyproject_filename == "pyproject.toml"
+    assert gitignore_filename == ".gitignore"
     assert len(template_dir_name) == expected_template_dir_length
     assert len(config_filename) == expected_config_filename_length
     assert len(pyproject_filename) == expected_pyproject_filename_length
+    assert len(gitignore_filename) == expected_gitignore_filename_length
 
 
 def test_init_copy_arguments() -> None:
-    """Test that copy2 is called with correct path arguments for both files."""
+    """Test that copy2 is called with correct path arguments for all three files."""
     captured_args: list[object] = []
 
     def capture_copy2(*args: object) -> None:
@@ -128,8 +133,8 @@ def test_init_copy_arguments() -> None:
     ):
         main()
 
-        # Verify we captured exactly 4 arguments (2 calls x 2 args each)
-        expected_arg_count = 4
+        # Verify we captured exactly 6 arguments (3 calls x 2 args each)
+        expected_arg_count = 6
         assert len(captured_args) == expected_arg_count
 
         # First call: .pre-commit-config.yaml
@@ -139,6 +144,10 @@ def test_init_copy_arguments() -> None:
         # Second call: pyproject.toml
         second_source_str = str(captured_args[2])
         second_target_str = str(captured_args[3])
+
+        # Third call: .gitignore
+        third_source_str = str(captured_args[4])
+        third_target_str = str(captured_args[5])
 
         # Test first call (pre-commit config)
         assert "templates" in first_source_str
@@ -152,9 +161,15 @@ def test_init_copy_arguments() -> None:
         assert second_source_str.endswith("templates/pyproject.toml")
         assert second_target_str == "/test/dir/pyproject.toml"
 
+        # Test third call (.gitignore)
+        assert "templates" in third_source_str
+        assert ".gitignore" in third_source_str
+        assert third_source_str.endswith("templates/.gitignore")
+        assert third_target_str == "/test/dir/.gitignore"
+
 
 def test_main_init_existing_files() -> None:
-    """Test the init command when both config files already exist."""
+    """Test the init command when all config files already exist."""
     with (
         patch("sys.stdout", new_callable=StringIO) as mock_stdout,
         patch("sys.argv", ["containment-chamber", "init"]),
@@ -169,6 +184,7 @@ def test_main_init_existing_files() -> None:
             "Initializing containment chamber...\n"
             "Warning: .pre-commit-config.yaml already exists, skipping.\n"
             "Warning: pyproject.toml already exists, skipping.\n"
+            "Warning: .gitignore already exists, skipping.\n"
             "Containment chamber initialized!\n"
         )
         assert output == expected
@@ -181,7 +197,7 @@ def test_main_init_precommit_exists_only() -> None:
     expected_first_call = 1
 
     def file_exists_side_effect() -> bool:
-        # Return True only for the first call (precommit), False for second (pyproject)
+        # Return True only for the first call (precommit), False for others
         call_count[0] += 1
         return call_count[0] == expected_first_call
 
@@ -199,11 +215,13 @@ def test_main_init_precommit_exists_only() -> None:
             "Initializing containment chamber...\n"
             "Warning: .pre-commit-config.yaml already exists, skipping.\n"
             "Created pyproject.toml\n"
+            "Created .gitignore\n"
             "Containment chamber initialized!\n"
         )
         assert output == expected
-        # Should be called once for pyproject.toml only
-        mock_copy.assert_called_once()
+        # Should be called twice for pyproject.toml and .gitignore
+        expected_call_count = 2
+        assert mock_copy.call_count == expected_call_count
 
 
 def test_main_init_pyproject_exists_only() -> None:
@@ -212,7 +230,7 @@ def test_main_init_pyproject_exists_only() -> None:
     expected_second_call = 2
 
     def file_exists_side_effect() -> bool:
-        # Return False for first call (precommit), True for second call (pyproject)
+        # Return False for first call (precommit), True for second call (pyproject), False for third
         call_count[0] += 1
         return call_count[0] == expected_second_call
 
@@ -230,11 +248,46 @@ def test_main_init_pyproject_exists_only() -> None:
             "Initializing containment chamber...\n"
             "Created .pre-commit-config.yaml\n"
             "Warning: pyproject.toml already exists, skipping.\n"
+            "Created .gitignore\n"
             "Containment chamber initialized!\n"
         )
         assert output == expected
-        # Should be called once for .pre-commit-config.yaml only
-        mock_copy.assert_called_once()
+        # Should be called twice for .pre-commit-config.yaml and .gitignore
+        expected_call_count = 2
+        assert mock_copy.call_count == expected_call_count
+
+
+def test_main_init_gitignore_exists_only() -> None:
+    """Test the init command when only .gitignore exists."""
+    call_count = [0]
+    expected_third_call = 3
+
+    def file_exists_side_effect() -> bool:
+        # Return False for first two calls, True for third call (gitignore)
+        call_count[0] += 1
+        return call_count[0] == expected_third_call
+
+    with (
+        patch("sys.stdout", new_callable=StringIO) as mock_stdout,
+        patch("sys.argv", ["containment-chamber", "init"]),
+        patch("pathlib.Path.exists", side_effect=file_exists_side_effect),
+        patch("pathlib.Path.cwd", return_value=Path("/test/dir")),
+        patch("shutil.copy2") as mock_copy,
+    ):
+        main()
+
+        output: str = mock_stdout.getvalue()
+        expected = (
+            "Initializing containment chamber...\n"
+            "Created .pre-commit-config.yaml\n"
+            "Created pyproject.toml\n"
+            "Warning: .gitignore already exists, skipping.\n"
+            "Containment chamber initialized!\n"
+        )
+        assert output == expected
+        # Should be called twice for .pre-commit-config.yaml and pyproject.toml
+        expected_call_count = 2
+        assert mock_copy.call_count == expected_call_count
 
 
 def test_main_unknown_command() -> None:
