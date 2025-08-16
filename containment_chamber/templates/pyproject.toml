@@ -1,0 +1,120 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "containment-chamber"
+dynamic = ["version"]
+description = "A tool for containment chamber functionality"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    {name = "Mockapapella"},
+]
+license = {text = "MIT"}
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/Mockapapella/containment-chamber"
+Repository = "https://github.com/Mockapapella/containment-chamber"
+Issues = "https://github.com/Mockapapella/containment-chamber/issues"
+
+[project.scripts]
+containment-chamber = "containment_chamber.main:main"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "containment_chamber/_version.py"
+
+[dependency-groups]
+dev = [
+    "build>=1.2.2.post1",
+    "bandit>=1.8.6",
+    "complexipy>=3.3.0",
+    "coverage[toml]>=7.9.2",
+    "hypothesis>=6.136.0",
+    "mutmut>=3.3.0",
+    "mypy>=1.17.0",
+    "pip-audit>=2.9.0",
+    "pre-commit>=4.2.0",
+    "pytest>=8.4.1",
+    "ruff>=0.12.5",
+]
+
+[tool.hatch.build]
+include = [
+    "containment_chamber/**/*.py",
+    "README.md",
+    "LICENSE",
+]
+
+[tool.coverage.run]
+source = ["containment_chamber"]
+branch = true
+omit = ["*/_version.py"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 100
+
+[tool.hypothesis]
+derandomize = true
+database = "none"
+max_examples = 300
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = ["mutants"]
+
+[tool.mutmut]
+paths_to_mutate = ["containment_chamber/"]
+tests_dir = ["tests/"]
+runner = "python -m pytest"
+backup = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["D211", "D213"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S101"]
+
+[tool.mypy]
+python_version = "3.12"
+mypy_path = "stubs"
+strict = true
+disallow_any_unimported = true
+disallow_any_expr = true
+disallow_any_explicit = true
+disallow_any_generics = true
+disallow_subclassing_any = true
+extra_checks = true
+strict_bytes = true
+local_partial_types = true
+show_error_codes = true
+pretty = true
+show_absolute_path = true
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+strict_equality = true
+no_implicit_reexport = true
+follow_imports = "normal"
+enable_error_code = ["exhaustive-match"]
+exclude = ["mutants/"]
+ignore_missing_imports = false
+disallow_untyped_calls = true

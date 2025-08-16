@@ -9,19 +9,29 @@ def init_containment_chamber() -> None:
     """Initialize containment chamber in current directory."""
     sys.stdout.write("Initializing containment chamber...\n")
 
-    # Get template path
+    # Get template paths
     template_dir = Path(__file__).parent / "templates"
     precommit_template = template_dir / ".pre-commit-config.yaml"
+    pyproject_template = template_dir / "pyproject.toml"
 
-    # Copy .pre-commit-config.yaml to current directory
+    # Get current directory
     current_dir = Path.cwd()
-    target_file = current_dir / ".pre-commit-config.yaml"
 
-    if target_file.exists():
+    # Copy .pre-commit-config.yaml
+    precommit_target = current_dir / ".pre-commit-config.yaml"
+    if precommit_target.exists():
         sys.stdout.write("Warning: .pre-commit-config.yaml already exists, skipping.\n")
     else:
-        shutil.copy2(precommit_template, target_file)
+        shutil.copy2(precommit_template, precommit_target)
         sys.stdout.write("Created .pre-commit-config.yaml\n")
+
+    # Copy pyproject.toml
+    pyproject_target = current_dir / "pyproject.toml"
+    if pyproject_target.exists():
+        sys.stdout.write("Warning: pyproject.toml already exists, skipping.\n")
+    else:
+        shutil.copy2(pyproject_template, pyproject_target)
+        sys.stdout.write("Created pyproject.toml\n")
 
     sys.stdout.write("Containment chamber initialized!\n")
 
